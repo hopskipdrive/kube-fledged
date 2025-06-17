@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG GOLANG_VERSION
-ARG ALPINE_VERSION
+ARG GOLANG_VERSION=1.23.0
 
 FROM golang:$GOLANG_VERSION AS builder
 LABEL stage=builder
@@ -22,7 +21,7 @@ COPY . /go/src/github.com/senthilrch/kube-fledged
 WORKDIR /go/src/github.com/senthilrch/kube-fledged
 RUN CGO_ENABLED=0 go build -o build/kubefledged-controller -ldflags '-s -w -extldflags "-static"' cmd/controller/main.go
 
-FROM alpine:$ALPINE_VERSION
+FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
 LABEL maintainer="senthilrch <senthilrch@gmail.com>"
 COPY --from=builder /go/src/github.com/senthilrch/kube-fledged/build/kubefledged-controller /opt/bin/kubefledged-controller
 RUN chmod 755 /opt/bin/kubefledged-controller
