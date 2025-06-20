@@ -22,7 +22,6 @@ WORKDIR /go/src/github.com/senthilrch/kube-fledged
 RUN CGO_ENABLED=0 go build -o build/kubefledged-controller -ldflags '-s -w -extldflags "-static"' cmd/controller/main.go
 
 FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
-LABEL maintainer="senthilrch <senthilrch@gmail.com>"
 COPY --from=builder /go/src/github.com/senthilrch/kube-fledged/build/kubefledged-controller /opt/bin/kubefledged-controller
 RUN chmod 755 /opt/bin/kubefledged-controller
 ENTRYPOINT ["/opt/bin/kubefledged-controller"]
