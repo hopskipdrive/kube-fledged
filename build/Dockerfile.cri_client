@@ -12,10 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ARG ALPINE_VERSION
-FROM alpine:$ALPINE_VERSION
+FROM registry.access.redhat.com/ubi8/ubi-minimal:latest
 
-RUN apk update && apk add --no-cache bash curl openssh-client
+RUN yum update -y && yum install -y bash curl openssh-clients
 
 ARG DOCKER_VERSION
 ARG CRICTL_VERSION
